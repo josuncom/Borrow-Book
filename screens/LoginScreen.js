@@ -1,6 +1,6 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import auth from '@react-native-firebase/auth';
-import { GoogleSignin, GoogleSigninButton } from '@react-native-google-signin/google-signin';
+import { GoogleSignin, GoogleSigninButton }  from '@react-native-google-signin/google-signin';
 
 import {
   SafeAreaView,
@@ -10,30 +10,62 @@ import {
   Text,
   useColorScheme,
   View,
+  Button
 } from 'react-native';
 
 
-const googleSigninConfigure = () => {
-    GoogleSignin.configure({
-      webClientId:
-      '1016823322854-sbe82qsq1f00hh7qhh8tl7jr5ckm2urf.apps.googleusercontent.com',
-    })
+export default function Login(){
+  const [initializing, setInitializing] = useState(true);
+  const [user, setUser] = useState();
+
+  
+  const onGoogleButtonPress = async () => { 
+      try{
+        const { idToken } = await GoogleSignin.signIn(); 
+        const googleCredential = auth.GoogleAuthProvider.credential(idToken); 
+        console.log(idToken);
+      }
+      catch(error){
+          console.log(error);
+      }
+    
+      console.log("clicked!");
   }
   
-const onGoogleButtonPress = async () => { 
-    const { idToken } = await GoogleSignin.signIn(); 
-    const googleCredential = auth.GoogleAuthProvider.credential(idToken); 
-    return auth().signInWithCredential(googleCredential); 
-}
-  
+  useEffect(() => {
+      GoogleSignin.configure({
+        webClientId : '715982633310-b9o4eieu2bu5ah34rfrrkv0vi2tk65g9.apps.googleusercontent.com'
+      });
+    }, [])
 
-export default function Login(){
-    useEffect(() => {
-        googleSigninConfigure();
-      })
-      return (
-        <View style={{flex : 1, alignItems:'center', justifyContent:'center'}}>
-          <GoogleSigninButton onPress={() => onGoogleButtonPress()}/>
-        </View>
-      );
+  return (
+      <View style={{flex : 1, alignItems:'center', justifyContent:'center'}}>
+        <Text>구글 이름: {user?.displayName}</Text>
+        <Text>구글 이메일: {user?.email}</Text>
+        <GoogleSigninButton onPress={() => onGoogleButtonPress()} />
+        <Button title="Logout" onPress={() => handleSignOut()} />
+      </View>
+    );
 }
+
+
+/*
+  const onAuthStateChanged = user => {
+    setUser(user);
+    if(initializing)
+      setInitializing(false);
+  };
+
+  useEffect(() => {
+    const subscriber = auth().onAuthStateChanged(onAuthStateChanged);
+    return subscriber;
+  }, []);
+
+  const handleSignOut = () => {
+    try {
+      auth().signOut();
+    } catch (error) {
+      console.log(error.stack);
+    }
+  };
+*/
