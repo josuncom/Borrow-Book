@@ -1,42 +1,40 @@
 import * as React from 'react';
 import { useState } from 'react';
-import { View, Text,TouchableOpacity, Button } from 'react-native';
+import { FlatList, View, Text, TouchableOpacity, Button, Image, StatusBar } from 'react-native';
 import firestore from '@react-native-firebase/firestore';
 import storage from '@react-native-firebase/storage';
 import ImagePicker from 'react-native-image-crop-picker';
 import { firebase } from '@react-native-firebase/firestore';
 
 export default function HomeScreen({navigation}) {
-
     const userCollection = firestore().collection('user');
-    const [user, setUser] = useState();
+    const [data, setData] = useState();
     const [img, setImg] = useState(null);
-     
-    const uploading = () =>{
-        ImagePicker.openPicker({
-            width:300,
-            height: 400,
-            cropping: false
-        }).then(async image => {
-            console.log(image); 
-            setImg(image.path);
-            let imgName= image.path.substring(image.path.lastIndexOf('/') + 1);
-            console.log(imgName);
-            const reference = firebase.storage().ref('imgName');
+    const [url, setUrl] = useState('');
+    const date = new Date();
 
-            try{
-                await reference.putFile(image.path);
-            } catch(error){
-                console.log(error.message);
-            }
-        });
-    }
+
+    const getImage = async() => {
+        let url = '';
+        try {
+          const imageRef = await storage().ref('image838');
+          url = await imageRef.getDownloadURL();
+          setUrl(url);
+          console.log('imageUrl:', url);    
+        console.log(typeof(url));
+          return url;
+        } catch (e) {
+          console.log(e);
+        }
+      };
+
 
     const _callApi = async() => {
         try{
-            const data = await userCollection.get();
-            setUser(data.docs.map(doc => ({...doc.data(), id : doc.id})));
-            console.log(user[0]);
+            const db = await userCollection.get();
+            setData(db.docs.map(doc => ({...doc.data(), id : doc.id})));
+            getImage();
+            console.log(data);
         } catch(e){
             console.log(e.message);
         }
@@ -45,13 +43,16 @@ export default function HomeScreen({navigation}) {
     return (
         <View style={{flex : 1, alignItems:'center', justifyContent:'center' }}>
             <Button title="데이터 읽기" onPress={_callApi}/>
-            <Button title="이미지 출력" onPress={uploading}/>
-            {user?.map((row, idx) => {
+            {data?.map((row) => {
                 return(
-                <View style={{flex : 1, color:"White", marginTop:'5%'}}>
+                <View style={{flex : 1, marginTop:'5%'}}>
                     <Text>{row.name} / {row.until} / {row.cost}</Text>
+                    <Image 
+                        source={{uri : url}}
+                        style={{width:300, height:300}}/>
                 </View>
             )})}
         </View>
     );
+
 }

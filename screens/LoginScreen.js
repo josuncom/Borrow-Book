@@ -8,9 +8,12 @@ import {
   StatusBar,
   StyleSheet,
   Text,
-  useColorScheme,
   View,
-  Button
+  Button,
+  Alert,
+  ActivityIndicator,
+  TouchableOpacity,
+  TextIn
 } from 'react-native';
 
 
@@ -32,18 +35,18 @@ export default function Login(){
       console.log("clicked!");
   }
   
+  
   useEffect(() => {
       GoogleSignin.configure({
         webClientId : '715982633310-b9o4eieu2bu5ah34rfrrkv0vi2tk65g9.apps.googleusercontent.com'
       });
     }, [])
 
+
   return (
       <View style={{flex : 1, alignItems:'center', justifyContent:'center'}}>
-        <Text>구글 이름: {user?.displayName}</Text>
-        <Text>구글 이메일: {user?.email}</Text>
-        <GoogleSigninButton onPress={() => onGoogleButtonPress()} />
-        <Button title="Logout" onPress={() => handleSignOut()} />
+        <GoogleSigninButton onPress={onGoogleButtonPress} />
+        <Button title="Logout" />
       </View>
     );
 }

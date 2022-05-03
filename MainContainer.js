@@ -74,4 +74,4 @@ function MainContainer() {
     );
 }
 
-export default MainContainer;
+export default MainContainer; // 내보내기? 해서 다른 js파일도 import 가능함
