@@ -3,6 +3,7 @@ import firestore from '@react-native-firebase/firestore';
 import * as React from 'react';
 import { useState } from 'react';
 import { View, Text, TextInput, Button } from 'react-native';
+import moment from 'moment';
 import storage from '@react-native-firebase/storage';
 import ImagePicker from 'react-native-image-crop-picker';
 
@@ -10,10 +11,10 @@ export default function EnrollScreen({navigation}) {
     const [addName, setAddName] = useState('');
     const [addCost, setAddCost] = useState('');
     const [addUntil, setAddUntil] = useState('');
-    const [createdAt, setCreatedAt] = useState('');
+    const [addCreatedAt, setCreatedAt] = useState('');
 
     const [img, setImg] = useState(null);
-    const date = new Date();
+    var now = moment();
 
     const addCollection = firestore().collection('user');
 
@@ -23,7 +24,7 @@ export default function EnrollScreen({navigation}) {
                 name : addName,
                 until : addUntil,
                 cost : addCost,
-                createdAt : addCreatedAt
+                createdAt : now.format(),
             });
             setAddName('');
             setAddUntil('');
@@ -44,8 +45,7 @@ export default function EnrollScreen({navigation}) {
             setImg(image.path);
             let imgName= image.path.substring(image.path.lastIndexOf('/') + 1);
             console.log(imgName);
-            const reference = firebase.storage().ref('image' + date.getUTCMilliseconds());
-
+            const reference = firebase.storage().ref(now.format());
             try{
                 await reference.putFile(image.path);
                 

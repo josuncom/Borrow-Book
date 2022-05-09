@@ -14,14 +14,13 @@ export default function HomeScreen({navigation}) {
     const date = new Date();
 
 
-    const getImage = async() => {
+    const getImage = async(book) => {
         let url = '';
         try {
-          const imageRef = await storage().ref('image838');
+          const imageRef = await storage().ref();
           url = await imageRef.getDownloadURL();
           setUrl(url);
           console.log('imageUrl:', url);    
-        console.log(typeof(url));
           return url;
         } catch (e) {
           console.log(e);
