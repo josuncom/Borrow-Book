@@ -6,6 +6,7 @@ import { View, Text, TextInput, Button } from 'react-native';
 import moment from 'moment';
 import storage from '@react-native-firebase/storage';
 import ImagePicker from 'react-native-image-crop-picker';
+import Geolocation from 'react-native-geolocation-service';
 
 export default function EnrollScreen({navigation}) {
     const [addName, setAddName] = useState('');
