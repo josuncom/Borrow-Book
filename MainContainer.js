@@ -53,17 +53,18 @@ function MainContainer() {
                     }
 
                     return <Ionicons name={iconName} size={size} color={color}/>
-
                 },
             })}
             tabBarOptions={{
-                activeTintColor: 'tomato',
-                inactiveTintColor: 'grey',
-                labelStyle: { paddingBottom: 10, fontSize: 10 },
-                style: { padding: 10, height: 70}
+                activeTintColor: 'black',
+                inactiveTintColor: 'black',
+                labelStyle: { paddingBottom: 5, fontSize: 10 },
+                style: {
+                    backgroundColor : 'black'
+                }
             }}>
 
-            <Tab.Screen name={homeName} component={HomeScreen}/>
+            <Tab.Screen options={{headerShown : false}} name={homeName} component={HomeScreen}/>
             <Tab.Screen name={chattingName} component={ChattingScreen}/>
             <Tab.Screen name={enrollName} component={EnrollScreen}/>
             <Tab.Screen name={loginName} component={LoginScreen}/>

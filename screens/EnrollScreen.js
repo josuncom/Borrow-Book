@@ -2,7 +2,7 @@ import { firebase } from '@react-native-firebase/auth';
 import firestore from '@react-native-firebase/firestore';
 import * as React from 'react';
 import { useState } from 'react';
-import { View, Text, TextInput, Button } from 'react-native';
+import { View, Text, TextInput, Button, Alert } from 'react-native';
 import moment from 'moment';
 import storage from '@react-native-firebase/storage';
 import ImagePicker from 'react-native-image-crop-picker';
@@ -12,7 +12,7 @@ export default function EnrollScreen({navigation}) {
     const [addName, setAddName] = useState('');
     const [addCost, setAddCost] = useState('');
     const [addUntil, setAddUntil] = useState('');
-    const [addCreatedAt, setCreatedAt] = useState('');
+
 
     const [img, setImg] = useState(null);
     var now = moment();
@@ -55,8 +55,23 @@ export default function EnrollScreen({navigation}) {
             }
 
             addItem();
+            createAlert();
         });
     }
+
+    const createAlert = () => {
+        Alert.alert(
+        "상품 등록이 완료되었습니다!",
+            [
+                {
+                    text: "확인",
+                    onPress: () => {console.log("확인")},
+                    style:"cancel"
+                }
+            ],
+            { cancelable : false}
+        );
+    };
 
     return (
         <View >

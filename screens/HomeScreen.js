@@ -1,20 +1,18 @@
 import * as React from 'react';
 import { useState, useEffect } from 'react';
-import { FlatList, View, Text, TouchableOpacity, Button, Image, StatusBar } from 'react-native';
+import { View, Text, TouchableOpacity, Button, Image, StyleSheet, ScrollView } from 'react-native';
 import firestore from '@react-native-firebase/firestore';
 import storage from '@react-native-firebase/storage';
-import ImagePicker from 'react-native-image-crop-picker';
-import { firebase } from '@react-native-firebase/firestore';
+import { createStackNavigator } from '@react-navigation/stack';
+// import ProductInfo from './ProductInfo';
 
-export default function HomeScreen({navigation}) {
+const HomeScreen = ({navigation}) => {
     const userCollection = firestore().collection('user');
-    const [data, setData] = useState();
-    const [img, setImg] = useState(null);
-    const [url, setUrl] = useState('');
     const [list, setList] = useState([]);
-    const date = new Date();
+    const [data, setData] = useState([]);
 
     const fetchData = async () =>{
+        let list = [];
         try{
             await firestore().collection('user').orderBy('createdAt').get().then((querySnapshot) =>{
                 querySnapshot.forEach((doc) => {
@@ -23,9 +21,8 @@ export default function HomeScreen({navigation}) {
                         createdAt,
                         name,
                         until,
-                        imageUrl
                     } = doc.data();
-                    
+
                     list.push({
                         cost,
                         createdAt,
@@ -34,7 +31,7 @@ export default function HomeScreen({navigation}) {
                     });
                 });
             });
-            setData(list); 
+            setList(list);
             getImage();
         } catch(e){
             console.log(e);
@@ -42,53 +39,121 @@ export default function HomeScreen({navigation}) {
     }
 
 
-    useEffect(() => {
-        fetchData();
-    }, []);
-
-
-    
     const getImage = async() => {
         let url = '';
-        try {
+        try {  
           for(let i = 0; i < list.length; i++)
           {  
             const imageRef = storage().ref(list[i].createdAt);
             url = await imageRef.getDownloadURL();
             list[i].imageUrl = url;
-            console.log('imageUrl:', url);
-            return url;    
+            console.log(`imageUrl ${i} : `, list[i].imageUrl); 
           }
+          setData(list);
         } catch (e) {
           console.log(e);
         }
       };
 
-/*
-    const _callApi = async() => {
-        try{
-            const db = await userCollection.get();
-            setData(db.docs.map(doc => ({...doc.data(), id : doc.id})));
-            getImage();
-            console.log(data);
-        } catch(e){
-            console.log(e.message);
-        }
-    }
-    */
+
+      useEffect(() => {
+          fetchData();
+      }, []);
+
 
     return (
-        <View style={{flex : 1, alignItems:'center', justifyContent:'center' }}>
+        <ScrollView style={styles.container}>
             <Button title="주변에 어떤 책이 있나요?" onPress={fetchData}/>
+            
             {data?.map((row) => {
                 return(
-                <View style={{flex : 1, marginTop:'5%'}}>
-                    <Text>{row.name} / {row.until} / {row.cost}</Text>
-                    <Image 
-                        source={{uri : row.imageUrl}}
-                        style={{width:300, height:300}}/>
-                </View>
-            )})}
+                        <TouchableOpacity style={styles.box} onPress={() => navigation.navigate('Details', {itemId : row.imageUrl})}>
+                            <Image 
+                                source={{uri : row.imageUrl}}
+                                style={styles.image}/>
+                                <View style={styles.textBox}>
+                                    <Text style={styles.bookName}>{row.name}</Text>
+                                    <Text>{row.until} 까지</Text>
+                                    <Text>{row.cost}</Text>
+                                </View>
+                        </TouchableOpacity>
+                )})}
+        </ScrollView>
+    );
+}
+
+
+const Stack = createStackNavigator();
+
+const StackNavigation = () => {
+  return(
+          <Stack.Navigator>
+              <Stack.Screen name="Homes" component={HomeScreen} />
+              <Stack.Screen name="Details" component={ProductInfo}/>
+          </Stack.Navigator>
+  );
+};
+
+function ProductInfo({route, navigation}){
+    const { itemId } = route.params;
+
+    return(
+        <View>
+            <Text>
+                {JSON.stringify(itemId)}
+            </Text>
         </View>
     );
 }
+
+/*
+const DetailsScreen = ({navigation}) => {
+  return (
+    <View style={styles.screen}>
+      <Text>Details Screen</Text>
+      <Button
+        title="Go to Details again"
+        onPress={ () => navigation.push('Details')}
+      />
+      <Button 
+        title="Go to Home"
+        onPress={ () => navigation.navigate('Homes')}
+      />
+      <Button
+        title="Go Back"
+        onPress={() => navigation.goBack()}
+      />
+      <Button 
+        title="Go back to first screen in stack"
+        onPress={() => navigation.popToTop()}
+      />
+    </View>
+  )
+}
+*/
+
+const styles = StyleSheet.create({
+    container : {
+        flex : 1,
+    },
+    box : {
+        flexDirection:'row',
+        marginTop : '2%',
+        marginLeft : '2%'
+    },
+    image : {
+        width : 80,
+        height : 80,
+    },
+    textBox : {
+        flexDirection:'column',
+        marginLeft : '2%',
+    },
+    bookName : {
+        fontSize : 20,
+        fontWeight:'bold'
+    }
+});
+
+
+export default StackNavigation;

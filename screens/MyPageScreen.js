@@ -6,7 +6,6 @@ export default function MyPageScreen({ navigation }) {
         <View style={{flex : 1, alignItems:'center', justifyContent:'center' }}>
             <TouchableOpacity>
             <Text
-                onPress={() => navigation.navigate('Home')}
                 style={{fontSize:30, fontWeight:'bold'}}>MyPage Screen</Text>
                 </TouchableOpacity>
         </View>
