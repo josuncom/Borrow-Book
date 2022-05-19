@@ -67,7 +67,12 @@ const HomeScreen = ({navigation}) => {
             
             {data?.map((row) => {
                 return(
-                        <TouchableOpacity style={styles.box} onPress={() => navigation.navigate('Details', {itemId : row.imageUrl})}>
+                        <TouchableOpacity style={styles.box} onPress={() => navigation.navigate('Details', 
+                        {
+                            itemName : row.name,
+                            itemCost : row.cost,
+                            itemUntil : row.until
+                        })}>
                             <Image 
                                 source={{uri : row.imageUrl}}
                                 style={styles.image}/>
@@ -95,12 +100,20 @@ const StackNavigation = () => {
 };
 
 function ProductInfo({route, navigation}){
-    const { itemId } = route.params;
+    const { itemName } = route.params;
+    const { itemCost } = route.params;
+    const { itemUntil } = route.params;
 
     return(
         <View>
+            <Text style={styles.bookName}>
+                책 제목 : {JSON.stringify(itemName)}
+            </Text>
             <Text>
-                {JSON.stringify(itemId)}
+                책 가격 : {JSON.stringify(itemCost)}
+            </Text>
+            <Text>
+                책 기한 : {JSON.stringify(itemUntil)}
             </Text>
         </View>
     );
