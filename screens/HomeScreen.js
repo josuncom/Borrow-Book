@@ -40,6 +40,7 @@ const HomeScreen = ({navigation}) => {
 
 
     const getImage = async() => {
+        console.log(list);
         let url = '';
         try {  
           for(let i = 0; i < list.length; i++)
@@ -50,6 +51,7 @@ const HomeScreen = ({navigation}) => {
             console.log(`imageUrl ${i} : `, list[i].imageUrl); 
           }
           setData(list);
+          
         } catch (e) {
           console.log(e);
         }
@@ -78,14 +80,17 @@ const HomeScreen = ({navigation}) => {
                                 style={styles.image}/>
                                 <View style={styles.textBox}>
                                     <Text style={styles.bookName}>{row.name}</Text>
-                                    <Text>{row.until} 까지</Text>
-                                    <Text>{row.cost}</Text>
-                                </View>
-                        </TouchableOpacity>
+                                    <Text style={styles.bookUntil}>{row.until} 까지</Text>
+                                    <Text style={styles.bookCost}>{row.cost}원</Text>
+                                </View>      
+                        </TouchableOpacity>    
                 )})}
+                
         </ScrollView>
+
     );
 }
+
 
 
 const Stack = createStackNavigator();
@@ -93,8 +98,8 @@ const Stack = createStackNavigator();
 const StackNavigation = () => {
   return(
           <Stack.Navigator>
-              <Stack.Screen name="Homes" component={HomeScreen} />
-              <Stack.Screen name="Details" component={ProductInfo}/>
+              <Stack.Screen options={{headerShown : false}} name="홈" component={HomeScreen} />
+              <Stack.Screen options={{headerShown : false}} name="Details" component={ProductInfo}/>
           </Stack.Navigator>
   );
 };
@@ -109,7 +114,7 @@ function ProductInfo({route, navigation}){
             <Text style={styles.bookName}>
                 책 제목 : {JSON.stringify(itemName)}
             </Text>
-            <Text>
+            <Text style={styles.bookCost}>
                 책 가격 : {JSON.stringify(itemCost)}
             </Text>
             <Text>
@@ -148,23 +153,35 @@ const DetailsScreen = ({navigation}) => {
 const styles = StyleSheet.create({
     container : {
         flex : 1,
+        backgroundColor : 'white'
     },
     box : {
         flexDirection:'row',
-        marginTop : '2%',
-        marginLeft : '2%'
+        marginTop : '5%',
+        marginLeft : '2%',
+        backgroundColor : 'white'
     },
     image : {
         width : 80,
         height : 80,
+        borderRadius : 5,
     },
     textBox : {
         flexDirection:'column',
         marginLeft : '2%',
     },
     bookName : {
-        fontSize : 20,
-        fontWeight:'bold'
+        fontSize : 15,
+        fontWeight:'100'
+    },
+    bookCost : {
+        fontSize : 15,
+        fontWeight : '900',
+        marginTop : '5%'
+    },
+    bookUntil : {
+        fontSize : 10,
+        marginTop : '3%'
     }
 });
 

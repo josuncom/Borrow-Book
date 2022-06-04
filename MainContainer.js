@@ -13,11 +13,11 @@ import MyPageScreen from './screens/MyPageScreen';
 
 
 // Rename Screens
-const homeName = 'Home';
-const enrollName = 'Enroll';
-const chattingName = 'Chat'
-const loginName = 'Login';
-const myPageName = 'MyPage';
+const homeName = '홈';
+const enrollName = '상품 등록';
+const chattingName = '채팅'
+const loginName = '로그인';
+const myPageName = '내 정보';
 
 const Tab = createBottomTabNavigator();
 
@@ -59,16 +59,55 @@ function MainContainer() {
                 activeTintColor: 'black',
                 inactiveTintColor: 'black',
                 labelStyle: { paddingBottom: 5, fontSize: 10 },
-                style: {
-                    backgroundColor : 'black'
-                }
             }}>
 
-            <Tab.Screen options={{headerShown : false}} name={homeName} component={HomeScreen}/>
-            <Tab.Screen name={chattingName} component={ChattingScreen}/>
-            <Tab.Screen name={enrollName} component={EnrollScreen}/>
-            <Tab.Screen name={loginName} component={LoginScreen}/>
-            <Tab.Screen name={myPageName} component={MyPageScreen}/>
+            <Tab.Screen options={{
+                headerStyle:{
+                    height:40
+                },
+                headerTitle:'홈',
+                headerTitleStyle:{
+                    fontSize:16
+                },
+                }
+                }name={homeName} component={HomeScreen}/>
+
+            <Tab.Screen options={{
+                headerStyle:{
+                    height:40
+                },
+                headerTitle:'채팅',
+                headerTitleStyle:{
+                    fontSize:16
+                }}} name={chattingName} component={ChattingScreen}/>
+
+            <Tab.Screen options={{
+                headerStyle:{
+                    height:40
+                },
+                headerTitle:'상품 등록',
+                headerTitleStyle:{
+                    fontSize:16
+                }}} name={enrollName} component={EnrollScreen}/>
+
+            <Tab.Screen options={{
+                headerStyle:{
+                    height:40
+                },
+                headerTitle:'로그인',
+                headerTitleStyle:{
+                    fontSize:16
+                }}} name={loginName} component={LoginScreen}/>
+
+            <Tab.Screen options={{
+                headerStyle:{
+                    height:40
+                },
+                headerTitle:'내 정보',
+                headerTitleStyle:{
+                    fontSize:16
+                }}} name={myPageName} component={MyPageScreen}/>
+
 
             </Tab.Navigator>
         </NavigationContainer>

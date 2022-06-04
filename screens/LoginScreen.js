@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import auth from '@react-native-firebase/auth';
 import { GoogleSignin, GoogleSigninButton }  from '@react-native-google-signin/google-signin';
+import { signIn, signUp } from "lib/auth";
 
 import {
   SafeAreaView,
@@ -11,16 +12,16 @@ import {
   View,
   Button,
   Alert,
+  TextInput,
   ActivityIndicator,
   TouchableOpacity,
   TextIn
 } from 'react-native';
 
-
 export default function Login(){
   const [initializing, setInitializing] = useState(true);
   const [user, setUser] = useState();
-
+  
   
   const onGoogleButtonPress = async () => { 
       try{
