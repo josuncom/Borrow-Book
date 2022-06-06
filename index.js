@@ -8,4 +8,4 @@ import {name as appName} from './app.json';
 
 AppRegistry.registerComponent(appName, () => App);
 
-// component개념 -> 각 화면을 구성하는 부품? 느낌인거죠.
+// component개념 -> 각 화면을 구성하는 부품

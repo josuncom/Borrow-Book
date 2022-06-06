@@ -1,15 +1,22 @@
 import * as React from 'react';
+import { RefreshControlProps } from 'react-native/Libraries/Components/RefreshControl/RefreshControl';
 import { useState, useEffect } from 'react';
-import { View, Text, TouchableOpacity, Button, Image, StyleSheet, ScrollView } from 'react-native';
+import { View, Text, TouchableOpacity, Button, Image, StyleSheet, ScrollView, RefreshControl } from 'react-native';
 import firestore from '@react-native-firebase/firestore';
 import storage from '@react-native-firebase/storage';
 import { createStackNavigator } from '@react-navigation/stack';
+
+
+import useDidMountEffect from '../lib/useDidMountEffect';
+
 // import ProductInfo from './ProductInfo';
 
 const HomeScreen = ({navigation}) => {
     const userCollection = firestore().collection('user');
+    const [isFetched, setIsFetched] = useState(false);
     const [list, setList] = useState([]);
     const [data, setData] = useState([]);
+
 
     const fetchData = async () =>{
         let list = [];
@@ -21,6 +28,8 @@ const HomeScreen = ({navigation}) => {
                         createdAt,
                         name,
                         until,
+                        genre,
+                        returnDate
                     } = doc.data();
 
                     list.push({
@@ -28,9 +37,12 @@ const HomeScreen = ({navigation}) => {
                         createdAt,
                         name,
                         until,
+                        genre,
+                        returnDate
                     });
                 });
             });
+            setIsFetched(true);
             setList(list);
             getImage();
         } catch(e){
@@ -40,7 +52,6 @@ const HomeScreen = ({navigation}) => {
 
 
     const getImage = async() => {
-        console.log(list);
         let url = '';
         try {  
           for(let i = 0; i < list.length; i++)
@@ -58,34 +69,39 @@ const HomeScreen = ({navigation}) => {
       };
 
 
+
       useEffect(() => {
+          console.log("목록 불러오기 완료");
           fetchData();
-      }, []);
+      }, [isFetched]);
 
 
     return (
         <ScrollView style={styles.container}>
-            <Button title="주변에 어떤 책이 있나요?" onPress={fetchData}/>
-            
-            {data?.map((row) => {
+            {isFetched ? (<Button title="목록 새로고침" onPress={fetchData}/>) : <Button title="주변에 어떤 책이 있나요?" onPress={fetchData}/>}
+
+            {(data?.map((row) => {
                 return(
                         <TouchableOpacity style={styles.box} onPress={() => navigation.navigate('Details', 
                         {
                             itemName : row.name,
                             itemCost : row.cost,
-                            itemUntil : row.until
+                            itemUntil : row.until,
+                            itemGenre : row.genre,
+                            itemReturnDate : row.returnDate
                         })}>
                             <Image 
                                 source={{uri : row.imageUrl}}
                                 style={styles.image}/>
                                 <View style={styles.textBox}>
                                     <Text style={styles.bookName}>{row.name}</Text>
-                                    <Text style={styles.bookUntil}>{row.until} 까지</Text>
+                                    <Text style={styles.bookReturnDate}>{row.returnDate} 까지</Text>
                                     <Text style={styles.bookCost}>{row.cost}원</Text>
+                                    <Text style={styles.bookGenre}>{row.genre}</Text>
                                 </View>      
-                        </TouchableOpacity>    
-                )})}
-                
+                        </TouchableOpacity> 
+                )}))
+}
         </ScrollView>
 
     );
@@ -124,31 +140,6 @@ function ProductInfo({route, navigation}){
     );
 }
 
-/*
-const DetailsScreen = ({navigation}) => {
-  return (
-    <View style={styles.screen}>
-      <Text>Details Screen</Text>
-      <Button
-        title="Go to Details again"
-        onPress={ () => navigation.push('Details')}
-      />
-      <Button 
-        title="Go to Home"
-        onPress={ () => navigation.navigate('Homes')}
-      />
-      <Button
-        title="Go Back"
-        onPress={() => navigation.goBack()}
-      />
-      <Button 
-        title="Go back to first screen in stack"
-        onPress={() => navigation.popToTop()}
-      />
-    </View>
-  )
-}
-*/
 
 const styles = StyleSheet.create({
     container : {
@@ -179,9 +170,12 @@ const styles = StyleSheet.create({
         fontWeight : '900',
         marginTop : '5%'
     },
-    bookUntil : {
+    bookReturnDate : {
         fontSize : 10,
         marginTop : '3%'
+    },
+    bookGenre : {
+        fontSize : 10
     }
 });
 
