@@ -43,12 +43,12 @@ Number.prototype.zf = function(len){return this.toString().zf(len);};
 export default function EnrollScreen({navigation}) {
     const [addName, setAddName] = useState('');
     const [addCost, setAddCost] = useState('');
-    const [addUntil, setAddUntil] = useState('');
     const [createdAt , setCreatedAt] = useState('');
     const [genre, setGenre] = useState('');
     const [isDatePickerVisible, setIsDatePickerVisible] = useState(false);
     const [img, setImg] = useState(null);
     const [returnDate, setReturnDate] = useState('');
+    const [textContent, setTextContent] = useState('');
     const placeholder = "언제까지 대여하시나요?";
     var now = moment();
 
@@ -73,18 +73,18 @@ export default function EnrollScreen({navigation}) {
         try{
             await addCollection.add({
                 name : addName,
-                until : addUntil,
                 cost : addCost,
                 createdAt : now.format(),
                 genre : genre,
-                returnDate : returnDate
+                returnDate : returnDate,
+                textContent : textContent
             });
             setAddName('');
-            setAddUntil('');
             setAddCost('');
             setCreatedAt('');
             setGenre('');
             setReturnDate('');
+            setTextContent('');
         } catch(error){
             console.log(error.message);
         }
@@ -117,17 +117,9 @@ export default function EnrollScreen({navigation}) {
         <View style={styles.container}>
             <View style={styles.box}>
                 <TextInput style={styles.nameInput}
-                    placeholder="책 제목을 입력하세요!"
+                    placeholder="글 제목"
                     value={addName}
                     onChange={e => setAddName(e.nativeEvent.text)}/>
-
-                <View style={styles.horizontalLine}/>
-
-                <TextInput style={styles.costInput}
-                    placeholder="1일당 가격을 입력하세요!"
-                    value={addCost}
-                    onChange={e => setAddCost(e.nativeEvent.text)}
-                    keyboardType="number-pad"/>
 
                 <View style={styles.horizontalLine}/>
 
@@ -152,8 +144,19 @@ export default function EnrollScreen({navigation}) {
 
                 <View style={styles.horizontalLine}/>
 
+                <TextInput style={styles.costInput}
+                    placeholder="1일당 가격을 입력하세요!"
+                    value={addCost}
+                    onChange={e => setAddCost(e.nativeEvent.text)}
+                    keyboardType="number-pad"/>
+
+                <View style={styles.horizontalLine}/>
+
                 <View style={styles.genreSelect}>
                     <RNPickerSelect
+                    placeholder={{
+                        label : '카테고리 선택',
+                    }}
                     onValueChange={value => setGenre(value)}
                         items={[
                             { label : '국내도서', value:'국내도서'},
@@ -163,9 +166,19 @@ export default function EnrollScreen({navigation}) {
 
                 <View style={styles.horizontalLine}/>
 
-                <View style={{ marginTop : '10%'}}>
+
+                <TextInput style={styles.costInput}
+                    placeholder="게시글 내용을 작성해주세요."
+                    value={textContent}
+                    multiline = {true}
+                    onChange={e => setTextContent(e.nativeEvent.text)}/>
+
+    
+
+                <View style={{ marginTop : '10%', marginLeft:'30%', marginRight:'30%'}}>
                     <Button title="사진과 함께 등록하기" onPress={uploading} />
                 </View>
+
             </View>
     </View>
     );
@@ -204,7 +217,7 @@ const styles = StyleSheet.create({
     },
 
     genreSelect : {
-        marginLeft:'5%',
+        marginLeft : '1.5%',
         marginRight:'5%'
     }
 }

@@ -30,7 +30,7 @@ export default function Login(){
         console.log(idToken);
       }
       catch(error){
-          console.log(error);
+          console.warn(error);
       }
     
       console.log("clicked!");
@@ -51,25 +51,3 @@ export default function Login(){
       </View>
     );
 }
-
-
-/*
-  const onAuthStateChanged = user => {
-    setUser(user);
-    if(initializing)
-      setInitializing(false);
-  };
-
-  useEffect(() => {
-    const subscriber = auth().onAuthStateChanged(onAuthStateChanged);
-    return subscriber;
-  }, []);
-
-  const handleSignOut = () => {
-    try {
-      auth().signOut();
-    } catch (error) {
-      console.log(error.stack);
-    }
-  };
-*/

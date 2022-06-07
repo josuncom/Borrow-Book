@@ -29,7 +29,8 @@ const HomeScreen = ({navigation}) => {
                         name,
                         until,
                         genre,
-                        returnDate
+                        returnDate,
+                        textContent
                     } = doc.data();
 
                     list.push({
@@ -38,7 +39,8 @@ const HomeScreen = ({navigation}) => {
                         name,
                         until,
                         genre,
-                        returnDate
+                        returnDate,
+                        textContent
                     });
                 });
             });
@@ -69,9 +71,7 @@ const HomeScreen = ({navigation}) => {
       };
 
 
-
       useEffect(() => {
-          console.log("목록 불러오기 완료");
           fetchData();
       }, [isFetched]);
 
@@ -88,7 +88,9 @@ const HomeScreen = ({navigation}) => {
                             itemCost : row.cost,
                             itemUntil : row.until,
                             itemGenre : row.genre,
-                            itemReturnDate : row.returnDate
+                            itemReturnDate : row.returnDate,
+                            itemImageUrl : row.imageUrl,
+                            itemTextContent : row.textContent
                         })}>
                             <Image 
                                 source={{uri : row.imageUrl}}
@@ -99,15 +101,12 @@ const HomeScreen = ({navigation}) => {
                                     <Text style={styles.bookCost}>{row.cost}원</Text>
                                     <Text style={styles.bookGenre}>{row.genre}</Text>
                                 </View>      
-                        </TouchableOpacity> 
-                )}))
-}
+                        </TouchableOpacity>                         
+                )}))               
+            }         
         </ScrollView>
-
     );
 }
-
-
 
 const Stack = createStackNavigator();
 
@@ -123,25 +122,53 @@ const StackNavigation = () => {
 function ProductInfo({route, navigation}){
     const { itemName } = route.params;
     const { itemCost } = route.params;
-    const { itemUntil } = route.params;
+    const { itemReturnDate } = route.params;
+    const { itemImageUrl} = route.params;
+    const { itemGenre } = route.params;
+    const { itemTextContent } = route.params;
 
     return(
         <View>
-            <Text style={styles.bookName}>
-                책 제목 : {JSON.stringify(itemName)}
+            <Image source={{uri : itemImageUrl}} style={styles.productInfoImage}/>                   
+        
+            <View style={styles.uploaderInfoBox}>
+                <Text style={styles.uploaderName}>업로드한 사용자 정보</Text>
+            </View>
+
+            <View style={styles.horizontalLine}/>
+
+            <Text style={styles.bookInfo_name}>
+                {JSON.stringify(itemName).substring(1, JSON.stringify(itemName).length - 1)}
             </Text>
-            <Text style={styles.bookCost}>
-                책 가격 : {JSON.stringify(itemCost)}
+
+            <Text style={styles.bookInfo_genre}>
+                {JSON.stringify(itemGenre).substring(1, JSON.stringify(itemGenre).length - 1)}
             </Text>
-            <Text>
-                책 기한 : {JSON.stringify(itemUntil)}
+
+            <Text style={styles.bookInfo_cost}>
+                {JSON.stringify(itemReturnDate).substring(1, JSON.stringify(itemReturnDate).length - 1)}&nbsp;까지 대여할 수 있어요!&nbsp;&nbsp;&nbsp;
+            </Text>
+            
+            <Text style={styles.bookInfo_returnDate}>
+                {JSON.stringify(itemCost).substring(1, JSON.stringify(itemCost).length - 1)}원이에요!   
+            </Text>
+
+            <Text style={styles.bookInfo_textContent}>
+                {JSON.stringify(itemTextContent).substring(1, JSON.stringify(itemTextContent).length - 1)}
             </Text>
         </View>
     );
 }
 
 
+
 const styles = StyleSheet.create({
+    horizontalLine : {
+        borderBottomColor: 'black',
+        borderBottomWidth: 0.5,
+        width:'90%',
+        marginLeft : '5%',
+    },
     container : {
         flex : 1,
         backgroundColor : 'white'
@@ -176,7 +203,48 @@ const styles = StyleSheet.create({
     },
     bookGenre : {
         fontSize : 10
+    },    
+    horizontalLine : {
+        borderBottomColor: 'black',
+        borderBottomWidth: 0.5,
+        width:'100%',
+    },
+    productInfoImage : {
+        width : '100%',
+        height : '50%'
+    },
+    uploaderInfoBox : {
+        height: '10%'
+    },
+    uploaderName : {
+        marginTop : '2.5%',
+        textAlign : 'center'
+    },
+    bookInfo_name : {
+        fontSize : 20,
+        fontWeight : 'bold',
+        marginLeft : '3%',
+        paddingTop : '2.5%'
+    },
+    bookInfo_cost : {
+        fontSize : 12,
+        marginLeft : '3%',
+        paddingTop : '2.5%'
+    },
+    bookInfo_returnDate: {
+        fontSize : 12,
+        marginLeft : '3%',
+        paddingTop : '2.5%'
+    },
+    bookInfo_genre : {
+        marginLeft : '3%',
+        fontSize : 10
+    },
+    bookInfo_textContent : {
+        marginLeft : '3%',
+        fontSize : 13
     }
+
 });
 
 
