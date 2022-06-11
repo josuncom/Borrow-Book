@@ -58,24 +58,21 @@ function MainContainer() {
             tabBarOptions={{
                 activeTintColor: 'black',
                 inactiveTintColor: 'black',
-                labelStyle: { paddingBottom: 5, fontSize: 10 },
-            }}>
+                labelStyle: { paddingBottom: 5, fontSize: 10},
+                }}
+                >
 
             <Tab.Screen options={{
                 headerStyle:{
-                    height:40
+                    height:40,
+                    backgroundColor : '#393838',
                 },
                 headerTitle:'홈',
-                headerTitleStyle:{
-                    fontSize:16
-                },
+                headerShown : false
                 }
                 }name={homeName} component={HomeScreen}/>
 
             <Tab.Screen options={{
-                headerStyle:{
-                    height:40
-                },
                 headerTitle:'채팅',
                 headerTitleStyle:{
                     fontSize:16
@@ -83,11 +80,13 @@ function MainContainer() {
 
             <Tab.Screen options={{
                 headerStyle:{
-                    height:40
+                    height:40,
+                    backgroundColor : '#393838',
                 },
                 headerTitle:'상품 등록',
                 headerTitleStyle:{
-                    fontSize:16
+                    fontSize:16,
+                    color : 'white'
                 }}} name={enrollName} component={EnrollScreen}/>
 
             <Tab.Screen options={{
@@ -107,7 +106,6 @@ function MainContainer() {
                 headerTitleStyle:{
                     fontSize:16
                 }}} name={myPageName} component={MyPageScreen}/>
-
 
             </Tab.Navigator>
         </NavigationContainer>

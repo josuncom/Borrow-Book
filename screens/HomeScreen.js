@@ -78,7 +78,9 @@ const HomeScreen = ({navigation}) => {
 
     return (
         <ScrollView style={styles.container}>
-            {isFetched ? (<Button title="목록 새로고침" onPress={fetchData}/>) : <Button title="주변에 어떤 책이 있나요?" onPress={fetchData}/>}
+            <TouchableOpacity style={styles.button} onPress={fetchData}>
+                <Text style={styles.buttonText}>↻</Text>
+            </TouchableOpacity>
 
             {(data?.map((row) => {
                 return(
@@ -92,6 +94,7 @@ const HomeScreen = ({navigation}) => {
                             itemImageUrl : row.imageUrl,
                             itemTextContent : row.textContent
                         })}>
+ 
                             <Image 
                                 source={{uri : row.imageUrl}}
                                 style={styles.image}/>
@@ -101,7 +104,7 @@ const HomeScreen = ({navigation}) => {
                                     <Text style={styles.bookCost}>{row.cost}원</Text>
                                     <Text style={styles.bookGenre}>{row.genre}</Text>
                                 </View>      
-                        </TouchableOpacity>                         
+                  </TouchableOpacity>                         
                 )}))               
             }         
         </ScrollView>
@@ -113,11 +116,26 @@ const Stack = createStackNavigator();
 const StackNavigation = () => {
   return(
           <Stack.Navigator>
-              <Stack.Screen options={{headerShown : false}} name="홈" component={HomeScreen} />
+              <Stack.Screen options={{headerStyle:{
+                    height:40,
+                    backgroundColor : '#393838',
+                }, headerTitleStyle:{color : 'white'},
+                headerRight : () => refreshBtn(),
+                headerRightContainerStyle : styles.headerRightContainer}} name="홈" component={HomeScreen}/>
               <Stack.Screen options={{headerShown : false}} name="Details" component={ProductInfo}/>
           </Stack.Navigator>
   );
 };
+
+function refreshBtn(){
+    return(
+        <View>
+            <TouchableOpacity>
+                <Text style={{fontSize : 20, color:'white'}}>↻</Text>
+            </TouchableOpacity>
+        </View>
+    )
+}
 
 function ProductInfo({route, navigation}){
     const { itemName } = route.params;
@@ -171,38 +189,47 @@ const styles = StyleSheet.create({
     },
     container : {
         flex : 1,
-        backgroundColor : 'white'
+        backgroundColor : '#393838',
     },
     box : {
         flexDirection:'row',
-        marginTop : '5%',
+        marginTop : '2.5%',
         marginLeft : '2%',
-        backgroundColor : 'white'
+        backgroundColor : '#545454',
+        borderRadius : 5,
     },
     image : {
         width : 80,
         height : 80,
         borderRadius : 5,
+        marginTop : 5,
+        marginBottom : 5,
     },
     textBox : {
         flexDirection:'column',
         marginLeft : '2%',
+        marginTop: 5,
+        marginBottom : 5
     },
     bookName : {
         fontSize : 15,
-        fontWeight:'100'
+        fontWeight:'100',
+        color : 'white'
     },
     bookCost : {
         fontSize : 15,
         fontWeight : '900',
-        marginTop : '5%'
+        marginTop : '5%',
+        color : 'white'
     },
     bookReturnDate : {
         fontSize : 10,
-        marginTop : '3%'
+        marginTop : '3%',
+        color : '#B2B2B2'
     },
     bookGenre : {
-        fontSize : 10
+        fontSize : 10,
+        color : '#B2B2B2'
     },    
     horizontalLine : {
         borderBottomColor: 'black',
@@ -211,7 +238,8 @@ const styles = StyleSheet.create({
     },
     productInfoImage : {
         width : '100%',
-        height : '50%'
+        height : '50%',
+        marginTop : 10
     },
     uploaderInfoBox : {
         height: '10%'
@@ -243,6 +271,24 @@ const styles = StyleSheet.create({
     bookInfo_textContent : {
         marginLeft : '3%',
         fontSize : 13
+    },
+    button : { 
+        borderRadius : 5,
+        width : 30,
+        marginLeft : '85%',
+        marginTop : '2.5%'
+    },
+    buttonText : { 
+        textAlign : 'right',
+        fontSize : 30,
+        color :'white'
+    },
+    headerRightContainer : {
+        paddingRight : '5%',
+        color : 'white'
+    },
+    refreshBtn : {
+        
     }
 
 });

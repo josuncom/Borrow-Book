@@ -118,6 +118,7 @@ export default function EnrollScreen({navigation}) {
             <View style={styles.box}>
                 <TextInput style={styles.nameInput}
                     placeholder="글 제목"
+                    placeholderTextColor="#545454"
                     value={addName}
                     onChange={e => setAddName(e.nativeEvent.text)}/>
 
@@ -128,7 +129,7 @@ export default function EnrollScreen({navigation}) {
                         pointerEvents="none"
                         style={styles.textInput}
                         placeholder={placeholder}
-                        placeholderTextColor="#000000"
+                        placeholderTextColor="#545454"
                         underlineColorAndroid="transparent"
                         editable={false}
                         value={returnDate}/>
@@ -146,6 +147,7 @@ export default function EnrollScreen({navigation}) {
 
                 <TextInput style={styles.costInput}
                     placeholder="1일당 가격을 입력하세요!"
+                    placeholderTextColor="#545454"
                     value={addCost}
                     onChange={e => setAddCost(e.nativeEvent.text)}
                     keyboardType="number-pad"/>
@@ -167,17 +169,20 @@ export default function EnrollScreen({navigation}) {
                 <View style={styles.horizontalLine}/>
 
 
-                <TextInput style={styles.costInput}
+                <TextInput style={styles.contentInput}
                     placeholder="게시글 내용을 작성해주세요."
+                    placeholderTextColor="#545454"
                     value={textContent}
                     multiline = {true}
                     onChange={e => setTextContent(e.nativeEvent.text)}/>
 
     
 
-                <View style={{ marginTop : '10%', marginLeft:'30%', marginRight:'30%'}}>
-                    <Button title="사진과 함께 등록하기" onPress={uploading} />
-                </View>
+                <TouchableOpacity onPress={uploading} style={{ backgroundColor:'white', marginTop : '10%', marginLeft:'30%', marginRight:'30%', borderRadius:5, height:'10%'}}>
+                    <View style={{marginTop:'4%'}}>
+                        <Text style={{color : 'black', textAlign:'center'}}>사진과 함께 등록하기</Text>
+                    </View>
+                </TouchableOpacity>
 
             </View>
     </View>
@@ -188,7 +193,7 @@ export default function EnrollScreen({navigation}) {
 const styles = StyleSheet.create({
     container : {
         flex : 1,
-        backgroundColor : 'white',
+        backgroundColor : '#393838',
     },
 
     horizontalLine : {
@@ -201,24 +206,34 @@ const styles = StyleSheet.create({
     nameInput : {
         width: '90%',
         marginLeft : '5%',
-        backgroundColor : 'white'
+        backgroundColor : '#393838',
+        color : 'white'
     },
 
     untilInput : {
         width: '90%',
         marginLeft : '5%',
-        backgroundColor : 'white'
+        backgroundColor : '#393838',
+        color : 'white'
     },
 
     costInput : {
         width: '90%',
         marginLeft : '5%',
-        backgroundColor : 'white'
+        backgroundColor : '#393838',
+        color : 'white'
+    },
+    contentInput : {
+        width: '90%',
+        marginLeft : '5%',
+        backgroundColor : '#393838',
+        color : 'white'
     },
 
     genreSelect : {
         marginLeft : '1.5%',
-        marginRight:'5%'
+        marginRight:'5%',
+        color : 'white'
     }
 }
 )
