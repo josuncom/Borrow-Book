@@ -29,7 +29,7 @@ export default function ChattingScreen({navigation}) {
 
 
     return (
-        <View style={{flex : 1 }}>
+        <View style={{flex : 1, backgroundColor:'#545454'}}>
             <GiftedChat
                     messages={messages}
                     onSend={messages => onSend(messages)}

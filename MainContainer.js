@@ -73,9 +73,14 @@ function MainContainer() {
                 }name={homeName} component={HomeScreen}/>
 
             <Tab.Screen options={{
+                headerStyle:{
+                    height:40,
+                    backgroundColor : '#393838',
+                },
                 headerTitle:'채팅',
                 headerTitleStyle:{
-                    fontSize:16
+                    fontSize:16,
+                    color : 'white'
                 }}} name={chattingName} component={ChattingScreen}/>
 
             <Tab.Screen options={{
@@ -91,20 +96,24 @@ function MainContainer() {
 
             <Tab.Screen options={{
                 headerStyle:{
-                    height:40
+                    height:40,
+                    backgroundColor : '#393838',
                 },
                 headerTitle:'로그인',
                 headerTitleStyle:{
-                    fontSize:16
+                    fontSize:16,
+                    color : 'white'
                 }}} name={loginName} component={LoginScreen}/>
 
             <Tab.Screen options={{
                 headerStyle:{
-                    height:40
+                    height:40,
+                    backgroundColor : '#393838',
                 },
                 headerTitle:'내 정보',
                 headerTitleStyle:{
-                    fontSize:16
+                    fontSize:16,
+                    color : 'white'
                 }}} name={myPageName} component={MyPageScreen}/>
 
             </Tab.Navigator>

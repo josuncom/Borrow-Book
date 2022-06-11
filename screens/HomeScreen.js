@@ -5,8 +5,6 @@ import { View, Text, TouchableOpacity, Button, Image, StyleSheet, ScrollView, Re
 import firestore from '@react-native-firebase/firestore';
 import storage from '@react-native-firebase/storage';
 import { createStackNavigator } from '@react-navigation/stack';
-
-
 import useDidMountEffect from '../lib/useDidMountEffect';
 
 // import ProductInfo from './ProductInfo';
@@ -18,7 +16,7 @@ const HomeScreen = ({navigation}) => {
     const [data, setData] = useState([]);
 
 
-    const fetchData = async () =>{
+    const fetchData = async () => {
         let list = [];
         try{
             await firestore().collection('user').orderBy('createdAt').get().then((querySnapshot) =>{
@@ -72,8 +70,10 @@ const HomeScreen = ({navigation}) => {
 
 
       useEffect(() => {
+          console.log('renered!');
           fetchData();
-      }, [isFetched]);
+      }, []);
+
 
 
     return (
@@ -84,7 +84,7 @@ const HomeScreen = ({navigation}) => {
 
             {(data?.map((row) => {
                 return(
-                        <TouchableOpacity style={styles.box} onPress={() => navigation.navigate('Details', 
+                        <TouchableOpacity style={styles.box} onPress={() => navigation.navigate('Details',
                         {
                             itemName : row.name,
                             itemCost : row.cost,
@@ -92,8 +92,7 @@ const HomeScreen = ({navigation}) => {
                             itemGenre : row.genre,
                             itemReturnDate : row.returnDate,
                             itemImageUrl : row.imageUrl,
-                            itemTextContent : row.textContent
-                        })}>
+                            itemTextContent : row.textContent})}>
  
                             <Image 
                                 source={{uri : row.imageUrl}}
@@ -189,13 +188,13 @@ const styles = StyleSheet.create({
     },
     container : {
         flex : 1,
-        backgroundColor : '#393838',
+        backgroundColor : '#545454',
     },
     box : {
         flexDirection:'row',
         marginTop : '2.5%',
         marginLeft : '2%',
-        backgroundColor : '#545454',
+        backgroundColor : '#393838',
         borderRadius : 5,
     },
     image : {

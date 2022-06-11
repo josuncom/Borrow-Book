@@ -53,6 +53,7 @@ export default function EnrollScreen({navigation}) {
     var now = moment();
 
     const showDatePicker = () => {
+        console.log(isDatePickerVisible);
         setIsDatePickerVisible(true);
     };
 
@@ -61,7 +62,7 @@ export default function EnrollScreen({navigation}) {
     };
 
     const handleConfirm = (date) => {
-        console.warn("A date has been picked : ", date.format("yyyy/MM/dd"));
+        setReturnDate(date.format("yyyy/MM/dd"));
         hideDatePicker();
         onChangeText(date.format("yyyy/MM/dd"))
     }
@@ -79,18 +80,20 @@ export default function EnrollScreen({navigation}) {
                 returnDate : returnDate,
                 textContent : textContent
             });
-            setAddName('');
-            setAddCost('');
-            setCreatedAt('');
-            setGenre('');
-            setReturnDate('');
-            setTextContent('');
+            
         } catch(error){
             console.log(error.message);
         }
     };
 
     const uploading = () =>{
+        if(addName != '' && addCost != '' && genre != '' && returnDate != '' && textContent != ''){
+            setAddName('');
+            setAddCost('');
+            setCreatedAt('');
+            setGenre('');
+            setReturnDate('');
+            setTextContent('');
         ImagePicker.openPicker({
             width:300,
             height: 400,
@@ -108,9 +111,12 @@ export default function EnrollScreen({navigation}) {
                 console.log(error.message);
             }
 
-            addItem();
-            Alert.alert("상품 등록이 완료되었습니다!");
-        });
+                addItem();
+                Alert.alert("상품 등록이 완료되었습니다!");
+            })
+        } else{
+            Alert.alert("모든 항목을 입력했는지 확인해주세요!");
+        };
     }
 
     return (
@@ -124,12 +130,13 @@ export default function EnrollScreen({navigation}) {
 
                 <View style={styles.horizontalLine}/>
 
-                <TouchableOpacity onPress={showDatePicker} style={{marginLeft:"5%", marginRight:"5%"}}>
+                <TouchableOpacity onPress={showDatePicker} style={{marginLeft:"5%", marginRight:"5%", backgroundColor : '#393838'}}>
                     <TextInput
                         pointerEvents="none"
                         style={styles.textInput}
                         placeholder={placeholder}
                         placeholderTextColor="#545454"
+                        color='white'
                         underlineColorAndroid="transparent"
                         editable={false}
                         value={returnDate}/>
@@ -139,14 +146,14 @@ export default function EnrollScreen({navigation}) {
                         headerTextIOS={placeholder}
                         isVisible={isDatePickerVisible}
                         mode="date"
-                        onConfirm={value => setReturnDate(value.format("yyyy/MM/dd"))}
+                        onConfirm={value => handleConfirm(value)}
                         onCancel={hideDatePicker}/>
                 </TouchableOpacity>	
 
                 <View style={styles.horizontalLine}/>
 
                 <TextInput style={styles.costInput}
-                    placeholder="1일당 가격을 입력하세요!"
+                    placeholder="희망 판매가격을 입력하세요!"
                     placeholderTextColor="#545454"
                     value={addCost}
                     onChange={e => setAddCost(e.nativeEvent.text)}
@@ -178,8 +185,8 @@ export default function EnrollScreen({navigation}) {
 
     
 
-                <TouchableOpacity onPress={uploading} style={{ backgroundColor:'white', marginTop : '10%', marginLeft:'30%', marginRight:'30%', borderRadius:5, height:'10%'}}>
-                    <View style={{marginTop:'4%'}}>
+                <TouchableOpacity onPress={uploading} style={{ backgroundColor:'white', marginTop : '10%', marginLeft:'30%', marginRight:'30%', borderRadius:5, height:40}}>
+                    <View style={{marginTop:10}}>
                         <Text style={{color : 'black', textAlign:'center'}}>사진과 함께 등록하기</Text>
                     </View>
                 </TouchableOpacity>
@@ -193,9 +200,12 @@ export default function EnrollScreen({navigation}) {
 const styles = StyleSheet.create({
     container : {
         flex : 1,
-        backgroundColor : '#393838',
+        backgroundColor : '#545454',
     },
-
+    box : {
+        marginTop : '10%',
+        borderRadius : 10
+    },
     horizontalLine : {
         borderBottomColor: 'black',
         borderBottomWidth: 0.5,
@@ -231,8 +241,10 @@ const styles = StyleSheet.create({
     },
 
     genreSelect : {
-        marginLeft : '1.5%',
+        marginLeft : '5%',
         marginRight:'5%',
+        width : '90%',
+        backgroundColor : '#393838',
         color : 'white'
     }
 }

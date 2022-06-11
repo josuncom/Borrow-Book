@@ -45,7 +45,7 @@ export default function Login(){
 
 
   return (
-      <View style={{flex : 1, alignItems:'center', justifyContent:'center'}}>
+      <View style={{flex : 1, alignItems:'center', justifyContent:'center',  backgroundColor : '#545454',}}>
         <GoogleSigninButton onPress={onGoogleButtonPress} />
         <Button title="Logout" />
       </View>
