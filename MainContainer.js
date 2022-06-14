@@ -10,7 +10,7 @@ import EnrollScreen from './screens/EnrollScreen';
 import HomeScreen from './screens/HomeScreen';
 import LoginScreen from './screens/LoginScreen';
 import MyPageScreen from './screens/MyPageScreen';
-
+import SuspenseEX from './screens/Suspense';
 
 // Rename Screens
 const homeName = '홈';
@@ -70,7 +70,7 @@ function MainContainer() {
                 headerTitle:'홈',
                 headerShown : false
                 }
-                }name={homeName} component={HomeScreen}/>
+                }name={homeName} component={SuspenseEX}/>
 
             <Tab.Screen options={{
                 headerStyle:{

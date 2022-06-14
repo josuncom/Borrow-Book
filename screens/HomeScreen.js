@@ -11,14 +11,14 @@ import useDidMountEffect from '../lib/useDidMountEffect';
 
 const HomeScreen = ({navigation}) => {
     const userCollection = firestore().collection('user');
-    const [isFetched, setIsFetched] = useState(false);
+    const [loading, setLoading] = useState(true);
     const [list, setList] = useState([]);
     const [data, setData] = useState([]);
 
-
     const fetchData = async () => {
-        let list = [];
         try{
+            const dataList = [];
+            
             await firestore().collection('user').orderBy('createdAt').get().then((querySnapshot) =>{
                 querySnapshot.forEach((doc) => {
                     const{
@@ -31,7 +31,7 @@ const HomeScreen = ({navigation}) => {
                         textContent
                     } = doc.data();
 
-                    list.push({
+                    dataList.push({
                         cost,
                         createdAt,
                         name,
@@ -42,13 +42,17 @@ const HomeScreen = ({navigation}) => {
                     });
                 });
             });
-            setIsFetched(true);
-            setList(list);
+            setList(dataList);
             getImage();
+
+            if(loading){
+                setLoading(false);
+            }
+
         } catch(e){
             console.log(e);
         }
-    }
+    };
 
 
     const getImage = async() => {
@@ -67,45 +71,53 @@ const HomeScreen = ({navigation}) => {
           console.log(e);
         }
       };
+    
+
+    useEffect(() => {
+        fetchData();
+        console.log(loading);
+    }, [loading]);
 
 
-      useEffect(() => {
-          console.log('renered!');
-          fetchData();
-      }, []);
-
-
-
-    return (
+    return (        
         <ScrollView style={styles.container}>
             <TouchableOpacity style={styles.button} onPress={fetchData}>
                 <Text style={styles.buttonText}>↻</Text>
             </TouchableOpacity>
-
-            {(data?.map((row) => {
-                return(
+            { loading ? (
+                <ScrollView
+                style={{flex: 1}}
+                contentContainerStyle={{alignItems: 'center'}}>
+                <Text>
+                    Loading...
+                </Text>
+              </ScrollView>
+            ) : (
+                (data?.map((row) => {
+                    return(                                        
                         <TouchableOpacity style={styles.box} onPress={() => navigation.navigate('Details',
-                        {
-                            itemName : row.name,
-                            itemCost : row.cost,
-                            itemUntil : row.until,
-                            itemGenre : row.genre,
-                            itemReturnDate : row.returnDate,
-                            itemImageUrl : row.imageUrl,
-                            itemTextContent : row.textContent})}>
- 
-                            <Image 
-                                source={{uri : row.imageUrl}}
-                                style={styles.image}/>
-                                <View style={styles.textBox}>
-                                    <Text style={styles.bookName}>{row.name}</Text>
-                                    <Text style={styles.bookReturnDate}>{row.returnDate} 까지</Text>
-                                    <Text style={styles.bookCost}>{row.cost}원</Text>
-                                    <Text style={styles.bookGenre}>{row.genre}</Text>
-                                </View>      
-                  </TouchableOpacity>                         
-                )}))               
-            }         
+                            {
+                                itemName : row.name,
+                                itemCost : row.cost,
+                                itemUntil : row.until,
+                                itemGenre : row.genre,
+                                itemReturnDate : row.returnDate,
+                                itemImageUrl : row.imageUrl,
+                                itemTextContent : row.textContent})}>
+     
+                                <Image 
+                                    source={{uri : row.imageUrl}}
+                                    style={styles.image}/>
+                                    <View style={styles.textBox}>
+                                        <Text style={styles.bookName}>{row.name}</Text>
+                                        <Text style={styles.bookReturnDate}>{row.returnDate} 까지</Text>
+                                        <Text style={styles.bookCost}>{row.cost}원</Text>
+                                        <Text style={styles.bookGenre}>{row.genre}</Text>
+                                    </View>      
+                      </TouchableOpacity>                       
+                    )}))                       
+            )}
+            
         </ScrollView>
     );
 }

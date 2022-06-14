@@ -143,7 +143,7 @@ android {
         versionCode 1
         versionName "1.0"
         buildConfigField "boolean", "IS_NEW_ARCHITECTURE_ENABLED", isNewArchitectureEnabled().toString()
-
+        multiDexEnabled true
         if (isNewArchitectureEnabled()) {
             // We configure the NDK build only if you decide to opt-in for the New Architecture.
             externalNativeBuild {
@@ -269,7 +269,7 @@ dependencies {
     implementation 'com.google.firebase:firebase-auth'
     implementation platform('com.google.firebase:firebase-bom:26.2.0') // for RNfirebase
     implementation fileTree(dir: "libs", include: ["*.jar"])
-
+    implementation 'androidx.multidex:multidex:2.0.1' 
     //noinspection GradleDynamicVersion
     implementation "com.facebook.react:react-native:+"  // From node_modules
     implementation "androidx.swiperefreshlayout:swiperefreshlayout:1.0.0"
