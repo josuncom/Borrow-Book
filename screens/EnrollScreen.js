@@ -7,8 +7,7 @@ import moment from 'moment';
 import ImagePicker from 'react-native-image-crop-picker';
 import RNPickerSelect from 'react-native-picker-select';
 import DateTimePickerModal from 'react-native-modal-datetime-picker';
-import storage from '@react-native-firebase/storage';
-import Geolocation from 'react-native-geolocation-service';
+
 
 
 Date.prototype.format = function(f) {

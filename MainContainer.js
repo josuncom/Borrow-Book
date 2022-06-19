@@ -11,6 +11,7 @@ import HomeScreen from './screens/HomeScreen';
 import LoginScreen from './screens/LoginScreen';
 import MyPageScreen from './screens/MyPageScreen';
 import SuspenseEX from './screens/Suspense';
+import SuspenseEX2 from './screens/Suspense2';
 
 // Rename Screens
 const homeName = '홈';
@@ -18,6 +19,7 @@ const enrollName = '상품 등록';
 const chattingName = '채팅'
 const loginName = '로그인';
 const myPageName = '내 정보';
+
 
 const Tab = createBottomTabNavigator();
 
@@ -103,7 +105,7 @@ function MainContainer() {
                 headerTitleStyle:{
                     fontSize:16,
                     color : 'white'
-                }}} name={loginName} component={LoginScreen}/>
+                }}} name={loginName} component={SuspenseEX2}/>
 
             <Tab.Screen options={{
                 headerStyle:{

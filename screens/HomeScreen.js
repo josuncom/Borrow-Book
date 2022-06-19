@@ -1,81 +1,79 @@
 import * as React from 'react';
-import { RefreshControlProps } from 'react-native/Libraries/Components/RefreshControl/RefreshControl';
 import { useState, useEffect } from 'react';
-import { View, Text, TouchableOpacity, Button, Image, StyleSheet, ScrollView, RefreshControl } from 'react-native';
+import { View, Text, TouchableOpacity, Button, Image, StyleSheet, ScrollView, ActivityIndicator } from 'react-native';
 import firestore from '@react-native-firebase/firestore';
 import storage from '@react-native-firebase/storage';
 import { createStackNavigator } from '@react-navigation/stack';
-import useDidMountEffect from '../lib/useDidMountEffect';
 
-// import ProductInfo from './ProductInfo';
 
 const HomeScreen = ({navigation}) => {
     const userCollection = firestore().collection('user');
-    const [loading, setLoading] = useState(true);
     const [list, setList] = useState([]);
     const [data, setData] = useState([]);
+    const [loading, setLoading] = useState(true);
 
-    const fetchData = async () => {
-        try{
-            const dataList = [];
-            
-            await firestore().collection('user').orderBy('createdAt').get().then((querySnapshot) =>{
-                querySnapshot.forEach((doc) => {
-                    const{
-                        cost,
-                        createdAt,
-                        name,
-                        until,
-                        genre,
-                        returnDate,
-                        textContent
-                    } = doc.data();
+const fetchData = async () => {
+    let list = [];
+    try{
+        await firestore().collection('user').orderBy('createdAt').get().then((querySnapshot) =>{
+            querySnapshot.forEach((doc) => {
+                const{
+                    cost,
+                    createdAt,
+                    name,
+                    until,
+                    genre,
+                    returnDate,
+                    textContent
+                } = doc.data();
 
-                    dataList.push({
-                        cost,
-                        createdAt,
-                        name,
-                        until,
-                        genre,
-                        returnDate,
-                        textContent
-                    });
+                list.push({
+                    cost,
+                    createdAt,
+                    name,
+                    until,
+                    genre,
+                    returnDate,
+                    textContent
                 });
             });
-            setList(dataList);
-            getImage();
+        });
 
-            if(loading){
-                setLoading(false);
-            }
+        
+        setList(list);
+        getImage();
 
-        } catch(e){
-            console.log(e);
+        if(loading){
+            setLoading(false);
         }
-    };
 
 
-    const getImage = async() => {
-        let url = '';
-        try {  
-          for(let i = 0; i < list.length; i++)
-          {  
-            const imageRef = storage().ref(list[i].createdAt);
-            url = await imageRef.getDownloadURL();
-            list[i].imageUrl = url;
-            console.log(`imageUrl ${i} : `, list[i].imageUrl); 
-          }
-          setData(list);
-          
-        } catch (e) {
-          console.log(e);
-        }
-      };
+    } catch(e){
+        console.log(e);
+    }
+}
+
+
+const getImage = async() => {
+    let url = '';
+    try {  
+      for(let i = 0; i < list.length; i++)
+      {  
+        const imageRef = storage().ref(list[i].createdAt);
+        url = await imageRef.getDownloadURL();
+        list[i].imageUrl = url;
+        console.log(`imageUrl ${i} : `, list[i].imageUrl); 
+      }
+      setData(list);
+      
+    } catch (e) {
+      console.log(e);
+    }
+  };
     
 
     useEffect(() => {
         fetchData();
-        console.log(loading);
     }, [loading]);
 
 
@@ -88,14 +86,12 @@ const HomeScreen = ({navigation}) => {
                 <ScrollView
                 style={{flex: 1}}
                 contentContainerStyle={{alignItems: 'center'}}>
-                <Text>
-                    Loading...
-                </Text>
+                <ActivityIndicator size="large" color="white"/>
               </ScrollView>
             ) : (
                 (data?.map((row) => {
                     return(                                        
-                        <TouchableOpacity style={styles.box} onPress={() => navigation.navigate('Details',
+                        <TouchableOpacity style={styles.box} onPress={() => navigation.navigate('등록 정보',
                             {
                                 itemName : row.name,
                                 itemCost : row.cost,
@@ -122,6 +118,8 @@ const HomeScreen = ({navigation}) => {
     );
 }
 
+
+
 const Stack = createStackNavigator();
 
 const StackNavigation = () => {
@@ -133,7 +131,7 @@ const StackNavigation = () => {
                 }, headerTitleStyle:{color : 'white'},
                 headerRight : () => refreshBtn(),
                 headerRightContainerStyle : styles.headerRightContainer}} name="홈" component={HomeScreen}/>
-              <Stack.Screen options={{headerShown : false}} name="Details" component={ProductInfo}/>
+              <Stack.Screen options={{headerStyle:{height:40, backgroundColor:'transparent'}}} name="등록 정보" component={ProductInfo}/>
           </Stack.Navigator>
   );
 };
@@ -148,6 +146,10 @@ function refreshBtn(){
     )
 }
 
+function example(imageUri){
+    console.log(imageUri);
+}
+
 function ProductInfo({route, navigation}){
     const { itemName } = route.params;
     const { itemCost } = route.params;
@@ -159,13 +161,7 @@ function ProductInfo({route, navigation}){
     return(
         <View>
             <Image source={{uri : itemImageUrl}} style={styles.productInfoImage}/>                   
-        
-            <View style={styles.uploaderInfoBox}>
-                <Text style={styles.uploaderName}>업로드한 사용자 정보</Text>
-            </View>
-
-            <View style={styles.horizontalLine}/>
-
+            <View style={styles.ProductInfoTextBox}>
             <Text style={styles.bookInfo_name}>
                 {JSON.stringify(itemName).substring(1, JSON.stringify(itemName).length - 1)}
             </Text>
@@ -185,6 +181,7 @@ function ProductInfo({route, navigation}){
             <Text style={styles.bookInfo_textContent}>
                 {JSON.stringify(itemTextContent).substring(1, JSON.stringify(itemTextContent).length - 1)}
             </Text>
+            </View>
         </View>
     );
 }
@@ -200,16 +197,18 @@ const styles = StyleSheet.create({
     },
     container : {
         flex : 1,
-        backgroundColor : '#545454',
+        backgroundColor : 'white',
     },
     box : {
         flexDirection:'row',
         marginTop : '2.5%',
         marginLeft : '2%',
-        backgroundColor : '#393838',
+        marginRight : '2%',
+        backgroundColor : 'black',
         borderRadius : 5,
     },
     image : {
+        resizeMode : 'contain',
         width : 80,
         height : 80,
         borderRadius : 5,
@@ -246,42 +245,41 @@ const styles = StyleSheet.create({
         borderBottomColor: 'black',
         borderBottomWidth: 0.5,
         width:'100%',
+        height:'100%'
     },
     productInfoImage : {
         width : '100%',
-        height : '50%',
-        marginTop : 10
-    },
-    uploaderInfoBox : {
-        height: '10%'
-    },
-    uploaderName : {
-        marginTop : '2.5%',
-        textAlign : 'center'
+        height : '30%',
+        resizeMode : 'stretch'
     },
     bookInfo_name : {
         fontSize : 20,
         fontWeight : 'bold',
         marginLeft : '3%',
-        paddingTop : '2.5%'
+        paddingTop : '2.5%',
+        color : 'white'
     },
     bookInfo_cost : {
         fontSize : 12,
         marginLeft : '3%',
-        paddingTop : '2.5%'
+        paddingTop : '2.5%',
+        color : 'white'
     },
     bookInfo_returnDate: {
         fontSize : 12,
         marginLeft : '3%',
-        paddingTop : '2.5%'
+        paddingTop : '2.5%',
+        color : 'white'
     },
     bookInfo_genre : {
         marginLeft : '3%',
-        fontSize : 10
+        fontSize : 10,
+        color : 'white'
     },
     bookInfo_textContent : {
         marginLeft : '3%',
-        fontSize : 13
+        fontSize : 13,
+        color : 'white'
     },
     button : { 
         borderRadius : 5,
@@ -291,17 +289,16 @@ const styles = StyleSheet.create({
     },
     buttonText : { 
         textAlign : 'right',
-        fontSize : 30,
-        color :'white'
+        fontSize : 30
     },
     headerRightContainer : {
         paddingRight : '5%',
         color : 'white'
     },
-    refreshBtn : {
-        
+    ProductInfoTextBox : {
+        height : '100%',
+        backgroundColor : '#393838',
     }
-
 });
 
 
