@@ -1,10 +1,10 @@
 import * as React from 'react';
 import { useState, useEffect } from 'react';
-import { View, Text, TouchableOpacity, Button, Image, StyleSheet, ScrollView, ActivityIndicator } from 'react-native';
+import { View, Text, TouchableOpacity, Button, Image, StyleSheet, ScrollView, ActivityIndicator, ImageBackground } from 'react-native';
 import firestore from '@react-native-firebase/firestore';
 import storage from '@react-native-firebase/storage';
 import { createStackNavigator } from '@react-navigation/stack';
-
+import LinearGradient from 'react-native-linear-gradient';
 
 const HomeScreen = ({navigation}) => {
     const userCollection = firestore().collection('user');
@@ -77,8 +77,9 @@ const getImage = async() => {
     }, [loading]);
 
 
-    return (        
+    return (       
         <ScrollView style={styles.container}>
+            <ImageBackground source={require("../images/3.jpg")} style={styles.bg}>
             <TouchableOpacity style={styles.button} onPress={fetchData}>
                 <Text style={styles.buttonText}>↻</Text>
             </TouchableOpacity>
@@ -86,7 +87,7 @@ const getImage = async() => {
                 <ScrollView
                 style={{flex: 1}}
                 contentContainerStyle={{alignItems: 'center'}}>
-                <ActivityIndicator size="large" color="white"/>
+                <ActivityIndicator size="large"/>
               </ScrollView>
             ) : (
                 (data?.map((row) => {
@@ -100,7 +101,7 @@ const getImage = async() => {
                                 itemReturnDate : row.returnDate,
                                 itemImageUrl : row.imageUrl,
                                 itemTextContent : row.textContent})}>
-     
+                            
                                 <Image 
                                     source={{uri : row.imageUrl}}
                                     style={styles.image}/>
@@ -113,7 +114,7 @@ const getImage = async() => {
                       </TouchableOpacity>                       
                     )}))                       
             )}
-            
+            </ImageBackground>
         </ScrollView>
     );
 }
@@ -189,6 +190,11 @@ function ProductInfo({route, navigation}){
 
 
 const styles = StyleSheet.create({
+    bg : {
+        header: {flex: 1},
+        bgImage: {width: '100%', height: '100%'},
+    },
+    
     horizontalLine : {
         borderBottomColor: 'black',
         borderBottomWidth: 0.5,
@@ -204,7 +210,7 @@ const styles = StyleSheet.create({
         marginTop : '2.5%',
         marginLeft : '2%',
         marginRight : '2%',
-        backgroundColor : 'black',
+        backgroundColor : '#393838',
         borderRadius : 5,
     },
     image : {
@@ -214,6 +220,7 @@ const styles = StyleSheet.create({
         borderRadius : 5,
         marginTop : 5,
         marginBottom : 5,
+        marginLeft : 5
     },
     textBox : {
         flexDirection:'column',

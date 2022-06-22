@@ -264,6 +264,7 @@ android {
 }
 
 dependencies {
+    implementation project(':react-native-linear-gradient') // React-Native linear-gradient 
     implementation project(':react-native-splash-screen')   // for Spalsh Screen
     implementation 'com.google.android.gms:play-services-auth:20.1.0'
     implementation 'com.google.firebase:firebase-auth'

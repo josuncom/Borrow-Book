@@ -11,7 +11,5 @@ if (settings.hasProperty("newArchEnabled") && settings.newArchEnabled == "true")
 
 project(':react-native-splash-screen').projectDir = new File(rootProject.projectDir, '../node_modules/react-native-splash-screen/android')
 
-
-// for NAVER LOGIN
-include ':react-native-seoul-naver-login'
-project(':react-native-seoul-naver-login').projectDir = new File(rootProject.projectDir, 	'../node_modules/@react-native-seoul/naver-login/android')
+include ':react-native-linear-gradient'
+project(':react-native-linear-gradient').projectDir = new File(rootProject.projectDir, '../node_modules/react-native-linear-gradient/android')
