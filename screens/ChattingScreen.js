@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { useState, useCallback, useEffect } from 'react';
-import { View, Text } from 'react-native';
+import { View } from 'react-native';
 import {  GiftedChat , SystemMessage } from 'react-native-gifted-chat';
 
 export default function ChattingScreen({navigation}) {

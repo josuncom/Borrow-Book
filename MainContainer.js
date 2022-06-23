@@ -7,8 +7,6 @@ import Ionicons from 'react-native-vector-icons/Ionicons';
 // Import Pages
 import ChattingScreen from './screens/ChattingScreen';
 import EnrollScreen from './screens/EnrollScreen';
-import HomeScreen from './screens/HomeScreen';
-import LoginScreen from './screens/LoginScreen';
 import MyPageScreen from './screens/MyPageScreen';
 import SuspenseEX from './screens/Suspense';
 import SuspenseEX2 from './screens/Suspense2';
@@ -102,10 +100,7 @@ function MainContainer() {
                     backgroundColor : '#393838',
                 },
                 headerTitle:'로그인',
-                headerTitleStyle:{
-                    fontSize:16,
-                    color : 'white'
-                }}} name={loginName} component={SuspenseEX2}/>
+                headerShown : false}} name={loginName} component={SuspenseEX2}/>
 
             <Tab.Screen options={{
                 headerStyle:{

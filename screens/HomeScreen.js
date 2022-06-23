@@ -1,10 +1,9 @@
 import * as React from 'react';
 import { useState, useEffect } from 'react';
-import { View, Text, TouchableOpacity, Button, Image, StyleSheet, ScrollView, ActivityIndicator, ImageBackground } from 'react-native';
+import { View, Text, TouchableOpacity, Image, StyleSheet, ScrollView, ActivityIndicator, ImageBackground } from 'react-native';
 import firestore from '@react-native-firebase/firestore';
 import storage from '@react-native-firebase/storage';
 import { createStackNavigator } from '@react-navigation/stack';
-import LinearGradient from 'react-native-linear-gradient';
 
 const HomeScreen = ({navigation}) => {
     const userCollection = firestore().collection('user');
@@ -79,9 +78,9 @@ const getImage = async() => {
 
     return (       
         <ScrollView style={styles.container}>
-            <ImageBackground source={require("../images/3.jpg")} style={styles.bg}>
             <TouchableOpacity style={styles.button} onPress={fetchData}>
-                <Text style={styles.buttonText}>↻</Text>
+                <Text style={styles.buttonText}>대여 중인 책</Text>
+                <Text style={{marginLeft : '57.5%', paddingTop : '2.5%', color : 'white'}}>새로고침</Text>
             </TouchableOpacity>
             { loading ? (
                 <ScrollView
@@ -91,7 +90,7 @@ const getImage = async() => {
               </ScrollView>
             ) : (
                 (data?.map((row) => {
-                    return(                                        
+                    return(                                      
                         <TouchableOpacity style={styles.box} onPress={() => navigation.navigate('등록 정보',
                             {
                                 itemName : row.name,
@@ -111,10 +110,10 @@ const getImage = async() => {
                                         <Text style={styles.bookCost}>{row.cost}원</Text>
                                         <Text style={styles.bookGenre}>{row.genre}</Text>
                                     </View>      
-                      </TouchableOpacity>                       
+                      </TouchableOpacity>      
                     )}))                       
             )}
-            </ImageBackground>
+
         </ScrollView>
     );
 }
@@ -128,8 +127,9 @@ const StackNavigation = () => {
           <Stack.Navigator>
               <Stack.Screen options={{headerStyle:{
                     height:40,
-                    backgroundColor : '#393838',
+                    backgroundColor : '#2B2B2B',
                 }, headerTitleStyle:{color : 'white'},
+                headerShown : false,
                 headerRight : () => refreshBtn(),
                 headerRightContainerStyle : styles.headerRightContainer}} name="홈" component={HomeScreen}/>
               <Stack.Screen options={{headerStyle:{height:40, backgroundColor:'transparent'}}} name="등록 정보" component={ProductInfo}/>
@@ -203,15 +203,14 @@ const styles = StyleSheet.create({
     },
     container : {
         flex : 1,
-        backgroundColor : 'white',
+        backgroundColor : '#2B2B2B',
     },
     box : {
         flexDirection:'row',
-        marginTop : '2.5%',
-        marginLeft : '2%',
-        marginRight : '2%',
-        backgroundColor : '#393838',
+        backgroundColor : '#2B2B2B',
         borderRadius : 5,
+        borderBottomColor : 'white',
+        borderBottomWidth : 0.5
     },
     image : {
         resizeMode : 'contain',
@@ -224,9 +223,9 @@ const styles = StyleSheet.create({
     },
     textBox : {
         flexDirection:'column',
-        marginLeft : '2%',
+        marginLeft : '4%',
         marginTop: 5,
-        marginBottom : 5
+        marginBottom : 5,
     },
     bookName : {
         fontSize : 15,
@@ -246,7 +245,8 @@ const styles = StyleSheet.create({
     },
     bookGenre : {
         fontSize : 10,
-        color : '#B2B2B2'
+        paddingTop : '5%',
+        color : '#B2B2B2',
     },    
     horizontalLine : {
         borderBottomColor: 'black',
@@ -290,13 +290,19 @@ const styles = StyleSheet.create({
     },
     button : { 
         borderRadius : 5,
-        width : 30,
-        marginLeft : '85%',
-        marginTop : '2.5%'
+        width : '100%',
+        height : '10%',
+        borderBottomColor : '#7C7A7A',
+        borderBottomWidth : 0.5,
+        color : 'white',
+        textAlign : 'center',
+        flexDirection : 'row'
     },
     buttonText : { 
-        textAlign : 'right',
-        fontSize : 30
+        fontSize : 15,
+        color : 'white',
+        paddingTop : '2.5%',
+        paddingLeft : '3%'
     },
     headerRightContainer : {
         paddingRight : '5%',
