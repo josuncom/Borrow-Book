@@ -129,7 +129,7 @@ export default function EnrollScreen({navigation}) {
 
                 <View style={styles.horizontalLine}/>
 
-                <TouchableOpacity onPress={showDatePicker} style={{marginLeft:"5%", marginRight:"5%", backgroundColor : '#393838'}}>
+                <TouchableOpacity onPress={showDatePicker}>
                     <TextInput
                         pointerEvents="none"
                         style={styles.textInput}
@@ -139,7 +139,6 @@ export default function EnrollScreen({navigation}) {
                         underlineColorAndroid="transparent"
                         editable={false}
                         value={returnDate}/>
-
 
                 <DateTimePickerModal
                         headerTextIOS={placeholder}
@@ -164,11 +163,13 @@ export default function EnrollScreen({navigation}) {
                     <RNPickerSelect
                     placeholder={{
                         label : '카테고리 선택',
+                        color : 'black'
                     }}
+                    
                     onValueChange={value => setGenre(value)}
                         items={[
-                            { label : '국내도서', value:'국내도서'},
-                            { label : '해외도서', value:'해외도서'}
+                            { label : '국내도서', value:'국내도서', color : '#909090'},
+                            { label : '해외도서', value:'해외도서', color : '#909090'}
                     ]}/>
                 </View>
 
@@ -176,7 +177,7 @@ export default function EnrollScreen({navigation}) {
 
 
                 <TextInput style={styles.contentInput}
-                    placeholder="게시글 내용을 작성해주세요."
+                    placeholder="게시글 내용을 작성해주세요.(가품 및 판매 금지품목은 게시가 제한될 수 있어요.)"
                     placeholderTextColor="#545454"
                     value={textContent}
                     multiline = {true}
@@ -184,9 +185,9 @@ export default function EnrollScreen({navigation}) {
 
     
 
-                <TouchableOpacity onPress={uploading} style={{ backgroundColor:'white', marginTop : '10%', marginLeft:'30%', marginRight:'30%', borderRadius:5, height:40}}>
+                <TouchableOpacity onPress={uploading} style={{width : '40%', marginTop : '60%', marginLeft: '60%', height:43, borderColor:'#404040', borderWidth : 1, borderRadius : 3}}>
                     <View style={{marginTop:10}}>
-                        <Text style={{color : 'black', textAlign:'center'}}>사진과 함께 등록하기</Text>
+                        <Text style={{color : 'white', textAlign:'center'}}>사진과 함께 등록하기</Text>
                     </View>
                 </TouchableOpacity>
 
@@ -199,52 +200,37 @@ export default function EnrollScreen({navigation}) {
 const styles = StyleSheet.create({
     container : {
         flex : 1,
-        backgroundColor : '#545454',
+        backgroundColor : '#2B2B2B',
     },
     box : {
-        marginTop : '10%',
-        borderRadius : 10
+        width : '95%',
+        marginLeft : '2.5%'
     },
     horizontalLine : {
-        borderBottomColor: 'black',
+        borderBottomColor: '#404040',
         borderBottomWidth: 0.5,
-        width:'90%',
-        marginLeft : '5%',
     },
 
     nameInput : {
-        width: '90%',
-        marginLeft : '5%',
-        backgroundColor : '#393838',
-        color : 'white'
+        color : 'white',
+        fontSize : 13
     },
 
     untilInput : {
-        width: '90%',
-        marginLeft : '5%',
-        backgroundColor : '#393838',
-        color : 'white'
+        color : 'white',
+        fontSize : 13
     },
 
     costInput : {
-        width: '90%',
-        marginLeft : '5%',
-        backgroundColor : '#393838',
-        color : 'white'
+        color : 'white',
+        fontSize : 13
     },
     contentInput : {
-        width: '90%',
-        marginLeft : '5%',
-        backgroundColor : '#393838',
-        color : 'white'
+        color : 'white',
+        fontSize : 13
     },
-
-    genreSelect : {
-        marginLeft : '5%',
-        marginRight:'5%',
-        width : '90%',
-        backgroundColor : '#393838',
-        color : 'white'
+    textInput : {
+        fontSize : 13
     }
 }
 )

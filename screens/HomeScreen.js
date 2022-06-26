@@ -209,7 +209,7 @@ const styles = StyleSheet.create({
         flexDirection:'row',
         backgroundColor : '#2B2B2B',
         borderRadius : 5,
-        borderBottomColor : 'white',
+        borderBottomColor : '#606060',
         borderBottomWidth : 0.5
     },
     image : {

@@ -63,11 +63,6 @@ function MainContainer() {
                 >
 
             <Tab.Screen options={{
-                headerStyle:{
-                    height:40,
-                    backgroundColor : '#393838',
-                },
-                headerTitle:'홈',
                 headerShown : false
                 }
                 }name={homeName} component={SuspenseEX}/>
@@ -86,13 +81,15 @@ function MainContainer() {
             <Tab.Screen options={{
                 headerStyle:{
                     height:40,
-                    backgroundColor : '#393838',
+                    backgroundColor : '#2B2B2B',
                 },
-                headerTitle:'상품 등록',
+                headerTitle:'상품 등록하기',
                 headerTitleStyle:{
                     fontSize:16,
-                    color : 'white'
-                }}} name={enrollName} component={EnrollScreen}/>
+                    color : 'white',
+                },
+                headerTitleAlign : 'center'
+                }} name={enrollName} component={EnrollScreen}/>
 
             <Tab.Screen options={{
                 headerStyle:{
@@ -105,7 +102,7 @@ function MainContainer() {
             <Tab.Screen options={{
                 headerStyle:{
                     height:40,
-                    backgroundColor : '#393838',
+                    backgroundColor : '#2B2B2B',
                 },
                 headerTitle:'내 정보',
                 headerTitleStyle:{
